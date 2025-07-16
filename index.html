@@ -1,0 +1,95 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Calcutta Cravings</title>
+  <style>
+    body {{ font-family: 'Segoe UI', sans-serif; background: #fffaf3; margin: 0; padding: 0; color: #333; }}
+    header {{ background: #ffcc00; text-align: center; padding: 1em; }}
+    header h1 {{ margin: 0; font-size: 2em; color: #b30000; }}
+    .slogan {{ font-style: italic; color: #444; font-size: 1em; }}
+    .menu {{ max-width: 600px; margin: 1em auto; padding: 1em; background: #fff;
+            border-radius: 12px; box-shadow: 0 0 10px rgba(0,0,0,0.05); }}
+    .menu h2 {{ color: #b30000; border-bottom: 1px solid #eee; }}
+    .item {{ display: flex; justify-content: space-between; margin: 0.5em 0; }}
+    .item button {{ background: #b30000; color: #fff; border: none; padding: 0.3em 0.6em;
+                    border-radius: 6px; cursor: pointer; }}
+    .cart {{ margin-top: 1em; font-weight: bold; font-size: 1.2em; }}
+    .pay-btn {{ display: block; margin: 1em auto; background: #28a745; color: #fff;
+                border: none; padding: 0.7em 1.5em; font-size: 1em; border-radius: 10px;
+                cursor: pointer; }}
+    .qr {{ display: none; text-align: center; margin-top: 1em; }}
+    .footer {{ text-align: center; font-size: 0.9em; color: #666; margin-top: 2em; padding: 1em; }}
+    .toast {{ visibility: hidden; min-width: 250px; background-color: #333; color: #fff;
+              text-align: center; border-radius: 8px; padding: 0.75em; position: fixed; z-index: 1;
+              bottom: 30px; left: 50%; transform: translateX(-50%); }}
+    .toast.show {{ visibility: visible; animation: fadein 0.5s, fadeout 0.5s 2s; }}
+    @keyframes fadein {{ from {{ bottom: 0; opacity: 0; }} to {{ bottom: 30px; opacity: 1; }} }}
+    @keyframes fadeout {{ from {{ bottom: 30px; opacity: 1; }} to {{ bottom: 0; opacity: 0; }} }}
+    .name-input {{ margin-top: 1em; display: flex; flex-direction: column; gap: 0.5em; }}
+    .name-input input {{ padding: 0.5em; font-size: 1em; border-radius: 8px; border: 1px solid #ccc; }}
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Calcutta Cravings</h1>
+    <div class="slogan">Kolkata’s greatest hits – on a plate!</div>
+  </header>
+  <div class="menu">
+    <h2>A-La-Carte</h2>
+    <div class="item">Beguni (1 Pc) - ₹10 <button onclick="addToCart(10)">Add</button></div>
+    <div class="item">Kalakand (1 Pc) - ₹20 <button onclick="addToCart(20)">Add</button></div>
+    <div class="item">Gulab Jamun (2 Pc) with Rabdi - ₹40 <button onclick="addToCart(40)">Add</button></div>
+    <div class="item">Extra Luchi (1 Pc) - ₹10 <button onclick="addToCart(10)">Add</button></div>
+
+    <h2>Combos</h2>
+    <div class="item">Combo 1 - ₹89 <button onclick="addToCart(89)">Add</button></div>
+    <div class="item">Combo 2 - ₹89 <button onclick="addToCart(89)">Add</button></div>
+    <div class="item">Combo 3 - ₹149 <button onclick="addToCart(149)">Add</button></div>
+
+    <div class="cart">Total: ₹<span id="total">0</span></div>
+
+    <div class="name-input">
+      <label for="customerName">Your Name:</label>
+      <input type="text" id="customerName" placeholder="Enter your name (optional)" />
+    </div>
+
+    <button class="pay-btn" onclick="showQR()">Pay via PhonePe</button>
+
+    <div class="qr" id="qr-section">
+      <img src="data:image/png;base64,{encoded_qr}" alt="PhonePe QR Code" width="200">
+      <p>Scan this QR to complete your payment</p>
+    </div>
+  </div>
+
+  <div class="toast" id="toast">Item added to cart!</div>
+
+  <div class="footer">
+    Contact: +91-7595931466 • From Nolen Gur to Nostalgia – We Serve It All!
+  </div>
+
+  <script>
+    let total = 0;
+    function addToCart(amount) { 
+      total += amount; 
+      document.getElementById('total').textContent = total;
+      showToast(); 
+      navigator.vibrate?.(100); 
+    }
+    function showQR() {
+      const name = document.getElementById('customerName').value;
+      document.getElementById('qr-section').style.display = 'block';
+      if (name.trim()) {
+        alert(`Hi ${name}! Please scan the QR to pay ₹${total}`);
+      }
+    }
+    function showToast() {
+      const toast = document.getElementById("toast");
+      toast.className = "toast show";
+      setTimeout(() => { toast.className = toast.className.replace("show", ""); }, 2500);
+    }
+  </script>
+</body>
+</html>
